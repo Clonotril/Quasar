@@ -1,4 +1,5 @@
-﻿using Gma.System.MouseKeyHook;
+using Gma.System.MouseKeyHook;
+using NAudio.Wave;
 using Quasar.Common.Enums;
 using Quasar.Common.Helpers;
 using Quasar.Common.Messages;
@@ -51,6 +52,26 @@ namespace Quasar.Server.Forms
         private readonly RemoteDesktopHandler _remoteDesktopHandler;
 
         /// <summary>
+        /// The message handler for remote audio output (system sound).
+        /// </summary>
+        private readonly RemoteAudioOutputHandler _remoteAudioOutputHandler;
+
+        /// <summary>
+        /// States whether system audio streaming is enabled.
+        /// </summary>
+        private bool _enableAudio;
+
+        /// <summary>
+        /// The audio output device for playback of remote system sound.
+        /// </summary>
+        private WaveOut _waveOut;
+
+        /// <summary>
+        /// The buffered wave provider for audio playback.
+        /// </summary>
+        private BufferedWaveProvider _bufferedWaveProvider;
+
+        /// <summary>
         /// Holds the opened remote desktop form for each client.
         /// </summary>
         private static readonly Dictionary<Client, FrmRemoteDesktop> OpenedForms = new Dictionary<Client, FrmRemoteDesktop>();
@@ -82,6 +103,7 @@ namespace Quasar.Server.Forms
         {
             _connectClient = client;
             _remoteDesktopHandler = new RemoteDesktopHandler(client);
+            _remoteAudioOutputHandler = new RemoteAudioOutputHandler(client);
             _keysPressed = new List<Keys>();
 
             RegisterMessageHandler();
@@ -110,6 +132,9 @@ namespace Quasar.Server.Forms
             _remoteDesktopHandler.DisplaysChanged += DisplaysChanged;
             _remoteDesktopHandler.ProgressChanged += UpdateImage;
             MessageHandler.Register(_remoteDesktopHandler);
+            _remoteAudioOutputHandler.AudioOutputDevicesChanged += AudioOutputDevicesChanged;
+            _remoteAudioOutputHandler.ProgressChanged += AudioDataReceived;
+            MessageHandler.Register(_remoteAudioOutputHandler);
         }
 
         /// <summary>
@@ -120,6 +145,9 @@ namespace Quasar.Server.Forms
             MessageHandler.Unregister(_remoteDesktopHandler);
             _remoteDesktopHandler.DisplaysChanged -= DisplaysChanged;
             _remoteDesktopHandler.ProgressChanged -= UpdateImage;
+            MessageHandler.Unregister(_remoteAudioOutputHandler);
+            _remoteAudioOutputHandler.AudioOutputDevicesChanged -= AudioOutputDevicesChanged;
+            _remoteAudioOutputHandler.ProgressChanged -= AudioDataReceived;
             _connectClient.ClientState -= ClientDisconnected;
         }
 
@@ -257,6 +285,7 @@ namespace Quasar.Server.Forms
             OnResize(EventArgs.Empty); // trigger resize event to align controls 
 
             _remoteDesktopHandler.RefreshDisplays();
+            _remoteAudioOutputHandler.RefreshAudioOutputDevices();
         }
 
         /// <summary>
@@ -273,8 +302,10 @@ namespace Quasar.Server.Forms
             // all cleanup logic goes here
             UnsubscribeEvents();
             if (_remoteDesktopHandler.IsStarted) StopStream();
+            StopAudioPlayback();
             UnregisterMessageHandler();
             _remoteDesktopHandler.Dispose();
+            _remoteAudioOutputHandler.Dispose();
             picDesktop.Image?.Dispose();
         }
 
@@ -458,6 +489,113 @@ namespace Quasar.Server.Forms
             }
 
             this.ActiveControl = picDesktop;
+        }
+
+        #endregion
+
+        #region Remote Audio Output
+
+        /// <summary>
+        /// Called whenever the remote audio output devices changed.
+        /// </summary>
+        private void AudioOutputDevicesChanged(object sender, string[] deviceNames)
+        {
+            cbSpeakers.Items.Clear();
+            foreach (string name in deviceNames)
+            {
+                cbSpeakers.Items.Add(name);
+            }
+            if (cbSpeakers.Items.Count > 0)
+                cbSpeakers.SelectedIndex = 0;
+        }
+
+        /// <summary>
+        /// Called whenever audio data is received from the client.
+        /// </summary>
+        private void AudioDataReceived(object sender, byte[] audioData)
+        {
+            try
+            {
+                if (_bufferedWaveProvider != null && audioData != null && audioData.Length > 0)
+                {
+                    _bufferedWaveProvider.AddSamples(audioData, 0, audioData.Length);
+                }
+            }
+            catch (Exception)
+            {
+                // Buffer overflow - ignore to keep stream going
+            }
+        }
+
+        private void btnAudio_Click(object sender, EventArgs e)
+        {
+            if (_enableAudio)
+            {
+                // Stop audio
+                StopAudioPlayback();
+                btnAudio.Text = "\U0001F507";
+                toolTipButtons.SetToolTip(btnAudio, "Enable system audio.");
+                _enableAudio = false;
+            }
+            else
+            {
+                // Start audio
+                if (cbSpeakers.Items.Count == 0)
+                {
+                    MessageBox.Show("No remote audio output device detected.\nPlease wait till the client sends a list with available devices.",
+                        "Starting failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                StartAudioPlayback();
+                btnAudio.Text = "\U0001F50A";
+                toolTipButtons.SetToolTip(btnAudio, "Disable system audio.");
+                _enableAudio = true;
+            }
+
+            this.ActiveControl = picDesktop;
+        }
+
+        /// <summary>
+        /// Starts audio playback of remote system sound.
+        /// </summary>
+        private void StartAudioPlayback()
+        {
+            _remoteAudioOutputHandler.BeginReceiveAudio(cbSpeakers.SelectedIndex);
+
+            // We'll initialize playback when first audio data arrives
+            // For now, create a default format (will be updated on first data)
+            var waveFormat = new WaveFormat(48000, 16, 2);
+            _bufferedWaveProvider = new BufferedWaveProvider(waveFormat)
+            {
+                BufferDuration = TimeSpan.FromSeconds(5),
+                DiscardOnBufferOverflow = true
+            };
+
+            _waveOut = new WaveOut();
+            _waveOut.Init(_bufferedWaveProvider);
+            _waveOut.Play();
+        }
+
+        /// <summary>
+        /// Stops audio playback.
+        /// </summary>
+        private void StopAudioPlayback()
+        {
+            if (_remoteAudioOutputHandler.IsStarted)
+                _remoteAudioOutputHandler.EndReceiveAudio();
+
+            if (_waveOut != null)
+            {
+                try
+                {
+                    _waveOut.Stop();
+                    _waveOut.Dispose();
+                }
+                catch { }
+                _waveOut = null;
+            }
+            _bufferedWaveProvider = null;
         }
 
         #endregion

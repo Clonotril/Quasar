@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Target Name="ILRepacker" AfterTargets="PostBuildEvent" Condition="'$(Configuration)' == 'Release'">
 
@@ -8,6 +8,11 @@
     <InputAssemblies Include="$(TargetDir)Gma.System.MouseKeyHook.dll"/>
     <InputAssemblies Include="$(TargetDir)Quasar.Common.dll"/>
     <InputAssemblies Include="$(TargetDir)BouncyCastle.Crypto.dll"/>
+    <InputAssemblies Include="$(TargetDir)NAudio.dll"/>
+    <InputAssemblies Include="$(TargetDir)AForge.dll"/>
+    <InputAssemblies Include="$(TargetDir)AForge.Video.dll"/>
+    <InputAssemblies Include="$(TargetDir)AForge.Video.DirectShow.dll"/>
+    <InputAssemblies Include="$(TargetDir)DirectShowLib.dll"/>
   </ItemGroup>
 
   <ILRepack
@@ -15,6 +20,7 @@
     Internalize="true"
     InputAssemblies="@(InputAssemblies)"
     TargetKind="SameAsPrimaryAssembly"
+    LibraryPath="$(TargetFrameworkRootPath)$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion);$(TargetDir)"
     OutputFile="$(TargetPath)"/>
   </Target>
   <Target Name="CopyWindows" AfterTargets="PostBuildEvent" Condition="'$(OS)' == 'Windows_NT' ">

@@ -1,0 +1,21 @@
+# ============================================================
+# Run these commands in order in your terminal
+# Location: C:\Users\user\Documents\GitHub\Quasar
+# ============================================================
+
+# Step 1: Remove bin/ and obj/ from git tracking (files stay on disk)
+git rm -r --cached bin/
+git rm -r --cached Quasar.Client/obj/
+git rm -r --cached Quasar.Common/obj/
+git rm -r --cached Quasar.Common.Tests/obj/
+git rm -r --cached Quasar.Server/obj/
+
+# Step 2: Remove nuget.exe from tracking
+git rm --cached nuget.exe
+
+# Step 3: Commit the cleanup
+git add .gitignore
+git commit -m "Remove build artifacts from tracking and update .gitignore"
+
+# Step 4: Push to your fork
+git push origin master

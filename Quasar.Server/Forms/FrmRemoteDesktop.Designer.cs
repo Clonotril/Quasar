@@ -1,4 +1,4 @@
-﻿using Quasar.Server.Controls;
+using Quasar.Server.Controls;
 
 namespace Quasar.Server.Forms
 {
@@ -43,6 +43,8 @@ namespace Quasar.Server.Forms
             this.cbMonitors = new System.Windows.Forms.ComboBox();
             this.btnHide = new System.Windows.Forms.Button();
             this.btnShow = new System.Windows.Forms.Button();
+            this.btnAudio = new System.Windows.Forms.Button();
+            this.cbSpeakers = new System.Windows.Forms.ComboBox();
             this.toolTipButtons = new System.Windows.Forms.ToolTip(this.components);
             this.picDesktop = new RapidPictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.barQuality)).BeginInit();
@@ -119,6 +121,8 @@ namespace Quasar.Server.Forms
             // 
             this.panelTop.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panelTop.Controls.Add(this.btnKeyboard);
+            this.panelTop.Controls.Add(this.btnAudio);
+            this.panelTop.Controls.Add(this.cbSpeakers);
             this.panelTop.Controls.Add(this.cbMonitors);
             this.panelTop.Controls.Add(this.btnHide);
             this.panelTop.Controls.Add(this.lblQualityShow);
@@ -129,7 +133,7 @@ namespace Quasar.Server.Forms
             this.panelTop.Controls.Add(this.barQuality);
             this.panelTop.Location = new System.Drawing.Point(189, -1);
             this.panelTop.Name = "panelTop";
-            this.panelTop.Size = new System.Drawing.Size(384, 57);
+            this.panelTop.Size = new System.Drawing.Size(620, 57);
             this.panelTop.TabIndex = 7;
             // 
             // btnKeyboard
@@ -143,6 +147,28 @@ namespace Quasar.Server.Forms
             this.toolTipButtons.SetToolTip(this.btnKeyboard, "Enable keyboard input.");
             this.btnKeyboard.UseVisualStyleBackColor = true;
             this.btnKeyboard.Click += new System.EventHandler(this.btnKeyboard_Click);
+            // 
+            // btnAudio
+            // 
+            this.btnAudio.Location = new System.Drawing.Point(370, 5);
+            this.btnAudio.Name = "btnAudio";
+            this.btnAudio.Size = new System.Drawing.Size(28, 28);
+            this.btnAudio.TabIndex = 10;
+            this.btnAudio.TabStop = false;
+            this.btnAudio.Text = "\U0001F50A";
+            this.toolTipButtons.SetToolTip(this.btnAudio, "Enable system audio.");
+            this.btnAudio.UseVisualStyleBackColor = true;
+            this.btnAudio.Click += new System.EventHandler(this.btnAudio_Click);
+            // 
+            // cbSpeakers
+            // 
+            this.cbSpeakers.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbSpeakers.FormattingEnabled = true;
+            this.cbSpeakers.Location = new System.Drawing.Point(404, 8);
+            this.cbSpeakers.Name = "cbSpeakers";
+            this.cbSpeakers.Size = new System.Drawing.Size(200, 21);
+            this.cbSpeakers.TabIndex = 11;
+            this.cbSpeakers.TabStop = false;
             // 
             // cbMonitors
             // 
@@ -234,6 +260,8 @@ namespace Quasar.Server.Forms
         private System.Windows.Forms.Button btnShow;
         private System.Windows.Forms.ComboBox cbMonitors;
         private System.Windows.Forms.Button btnKeyboard;
+        private System.Windows.Forms.Button btnAudio;
+        private System.Windows.Forms.ComboBox cbSpeakers;
         private System.Windows.Forms.ToolTip toolTipButtons;
         private Controls.RapidPictureBox picDesktop;
     }

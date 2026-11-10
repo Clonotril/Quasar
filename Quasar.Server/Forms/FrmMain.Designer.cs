@@ -1,4 +1,4 @@
-﻿using Quasar.Server.Controls;
+using Quasar.Server.Controls;
 
 namespace Quasar.Server.Forms
 {
@@ -54,6 +54,9 @@ namespace Quasar.Server.Forms
             this.passwordRecoveryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.keyloggerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.remoteDesktopToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.remoteMicrophoneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.remoteWebcamToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.remoteWebcamAsyncToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.userSupportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showMessageboxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.remoteDesktopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -259,7 +262,10 @@ namespace Quasar.Server.Forms
             this.surveillanceToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.passwordRecoveryToolStripMenuItem,
             this.keyloggerToolStripMenuItem,
-            this.remoteDesktopToolStripMenuItem2});
+            this.remoteDesktopToolStripMenuItem2,
+            this.remoteMicrophoneToolStripMenuItem,
+            this.remoteWebcamToolStripMenuItem,
+            this.remoteWebcamAsyncToolStripMenuItem});
             this.surveillanceToolStripMenuItem.Image = global::Quasar.Server.Properties.Resources.monitoring;
             this.surveillanceToolStripMenuItem.Name = "surveillanceToolStripMenuItem";
             this.surveillanceToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
@@ -288,6 +294,30 @@ namespace Quasar.Server.Forms
             this.remoteDesktopToolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
             this.remoteDesktopToolStripMenuItem2.Text = "Remote Desktop";
             this.remoteDesktopToolStripMenuItem2.Click += new System.EventHandler(this.remoteDesktopToolStripMenuItem_Click);
+            // 
+            // remoteMicrophoneToolStripMenuItem
+            // 
+            this.remoteMicrophoneToolStripMenuItem.Image = global::Quasar.Server.Properties.Resources.microphone;
+            this.remoteMicrophoneToolStripMenuItem.Name = "remoteMicrophoneToolStripMenuItem";
+            this.remoteMicrophoneToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.remoteMicrophoneToolStripMenuItem.Text = "Remote Microphone";
+            this.remoteMicrophoneToolStripMenuItem.Click += new System.EventHandler(this.remoteMicrophoneToolStripMenuItem_Click);
+            // 
+            // remoteWebcamToolStripMenuItem
+            // 
+            this.remoteWebcamToolStripMenuItem.Image = global::Quasar.Server.Properties.Resources.webcam;
+            this.remoteWebcamToolStripMenuItem.Name = "remoteWebcamToolStripMenuItem";
+            this.remoteWebcamToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.remoteWebcamToolStripMenuItem.Text = "Remote Webcam";
+            this.remoteWebcamToolStripMenuItem.Click += new System.EventHandler(this.remoteWebcamToolStripMenuItem_Click);
+            // 
+            // remoteWebcamAsyncToolStripMenuItem
+            // 
+            this.remoteWebcamAsyncToolStripMenuItem.Image = global::Quasar.Server.Properties.Resources.webcam;
+            this.remoteWebcamAsyncToolStripMenuItem.Name = "remoteWebcamAsyncToolStripMenuItem";
+            this.remoteWebcamAsyncToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.remoteWebcamAsyncToolStripMenuItem.Text = "Remote Webcam (Async)";
+            this.remoteWebcamAsyncToolStripMenuItem.Click += new System.EventHandler(this.remoteWebcamAsyncToolStripMenuItem_Click);
             // 
             // userSupportToolStripMenuItem
             // 
@@ -890,6 +920,9 @@ namespace Quasar.Server.Forms
         private System.Windows.Forms.ToolStripMenuItem webFileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem elevateClientPermissionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem remoteDesktopToolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem remoteMicrophoneToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem remoteWebcamToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem remoteWebcamAsyncToolStripMenuItem;
     }
 }
 
