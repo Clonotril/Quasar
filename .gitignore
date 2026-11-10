@@ -303,3 +303,14 @@ paket-files/
 # CAKE
 tools/**
 !tools/packages.config
+
+# ==============================================================================
+# AI assistant outputs (Claude, Copilot, etc.)
+# ==============================================================================
+.claude/
+.claude_output/
+.cursorrules
+.cursorignore
+.aider*
+.copilot/
+.github/copilot/
