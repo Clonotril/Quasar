@@ -58,6 +58,7 @@ namespace Quasar.Server.Forms
             this.remoteWebcamToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.remoteWebcamAsyncToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.userSupportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.remoteChatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showMessageboxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.remoteDesktopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.visitWebsiteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -322,6 +323,7 @@ namespace Quasar.Server.Forms
             // userSupportToolStripMenuItem
             // 
             this.userSupportToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.remoteChatToolStripMenuItem,
             this.showMessageboxToolStripMenuItem,
             this.remoteDesktopToolStripMenuItem,
             this.visitWebsiteToolStripMenuItem});
@@ -329,7 +331,14 @@ namespace Quasar.Server.Forms
             this.userSupportToolStripMenuItem.Name = "userSupportToolStripMenuItem";
             this.userSupportToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.userSupportToolStripMenuItem.Text = "User Support";
-            // 
+            //
+            // remoteChatToolStripMenuItem
+            //
+            this.remoteChatToolStripMenuItem.Name = "remoteChatToolStripMenuItem";
+            this.remoteChatToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.remoteChatToolStripMenuItem.Text = "Chat";
+            this.remoteChatToolStripMenuItem.Click += new System.EventHandler(this.remoteChatToolStripMenuItem_Click);
+            //
             // showMessageboxToolStripMenuItem
             // 
             this.showMessageboxToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("showMessageboxToolStripMenuItem.Image")));
@@ -913,6 +922,7 @@ namespace Quasar.Server.Forms
         private System.Windows.Forms.ToolStripStatusLabel listenToolStripStatusLabel;
         private System.Windows.Forms.ToolStripMenuItem connectionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem userSupportToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem remoteChatToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showMessageboxToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem visitWebsiteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem remoteExecuteToolStripMenuItem;

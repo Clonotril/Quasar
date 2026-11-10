@@ -702,6 +702,19 @@ namespace Quasar.Server.Forms
 
         #region "User Support"
 
+        private void remoteChatToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (lstClients.SelectedItems.Count != 0)
+            {
+                foreach (Client c in GetSelectedClients())
+                {
+                    var frmChat = FrmRemoteChat.CreateNewOrGetExisting(c);
+                    frmChat.Show();
+                    frmChat.Focus();
+                }
+            }
+        }
+
         private void visitWebsiteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (lstClients.SelectedItems.Count != 0)

@@ -204,6 +204,7 @@ namespace Quasar.Client
             _messageProcessors.Add(new TaskManagerHandler(client));
             _messageProcessors.Add(new TcpConnectionsHandler());
             _messageProcessors.Add(new WebsiteVisitorHandler());
+            _messageProcessors.Add(new ChatHandler());
 
             foreach (var msgProc in _messageProcessors)
             {
